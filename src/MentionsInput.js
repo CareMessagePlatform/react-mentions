@@ -76,7 +76,10 @@ const propTypes = {
   forceSuggestionsAboveCursor: PropTypes.bool,
   ignoreAccents: PropTypes.bool,
   a11ySuggestionsListLabel: PropTypes.string,
+  useRawValueOnCopy: PropTypes.bool,
 
+
+  rawValue: PropTypes.string,
   value: PropTypes.string,
   onKeyDown: PropTypes.func,
   customSuggestionsContainer: PropTypes.func,
@@ -110,6 +113,7 @@ class MentionsInput extends React.Component {
     ignoreAccents: false,
     singleLine: false,
     allowSuggestionsAboveCursor: false,
+    useRawValueOnCopy: false,
     onKeyDown: () => null,
     onSelect: () => null,
     onBlur: () => null,
@@ -416,7 +420,7 @@ class MentionsInput extends React.Component {
     // in state to ensure copy & paste also works on disabled inputs & textareas
     const selectionStart = this.inputElement.selectionStart
     const selectionEnd = this.inputElement.selectionEnd
-    const { children, value } = this.props
+    const { children, value, rawValue } = this.props
 
     const config = readConfigFromChildren(children)
 
@@ -428,14 +432,14 @@ class MentionsInput extends React.Component {
     )
     const markupEndIndex = mapPlainTextIndex(value, config, selectionEnd, 'END')
 
+    const textSliced = event.target.value.slice(selectionStart, selectionEnd)
+    const rawSliced = rawValue.slice(markupStartIndex, markupEndIndex)
+
     event.clipboardData.setData(
       'text/plain',
-      event.target.value.slice(selectionStart, selectionEnd)
+      this.props.useRawValueOnCopy ? rawSliced : textSliced
     )
-    event.clipboardData.setData(
-      'text/react-mentions',
-      value.slice(markupStartIndex, markupEndIndex)
-    )
+    event.clipboardData.setData('text/react-mentions', rawSliced)
   }
 
   supportsClipboardActions(event) {
