@@ -430,7 +430,7 @@ class MentionsInput extends React.Component {
 
     event.clipboardData.setData(
       'text/plain',
-      event.target.value.slice(selectionStart, selectionEnd)
+      value.slice(markupStartIndex, markupEndIndex)
     )
     event.clipboardData.setData(
       'text/react-mentions',
