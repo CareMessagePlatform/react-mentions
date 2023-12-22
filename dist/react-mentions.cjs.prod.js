@@ -525,7 +525,7 @@ function Highlighter(_ref) {
 Highlighter.propTypes = {
   selectionStart: PropTypes.number,
   selectionEnd: PropTypes.number,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   onCaretPositionChange: PropTypes.func.isRequired,
   containerRef: PropTypes.oneOfType([ PropTypes.func, PropTypes.shape({
     current: "undefined" == typeof Element ? PropTypes.any : PropTypes.instanceOf(Element)
